@@ -12,23 +12,24 @@ public class Main {
 //        create object
 
         Student student = new Student();
-        student.setRollNo(2);
-        student.setStudentName("Cena");
-        student.setAge(25);
+        student.setRollNo(3);
+        student.setStudentName("Kapila");
+        student.setAge(23);
 
         System.out.println(student);
 
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(org.example.Student.class);
-        configuration.configure();
-
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
+        SessionFactory sessionFactory = new Configuration()
+                .addAnnotatedClass(org.example.Student.class)
+                .configure("hibernate.cfg.xml")
+                .buildSessionFactory();
         Session session = sessionFactory.openSession();
 
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction(); // when we manipulate database value create or update it will need transaction
 
-        session.save(student);
+        session.persist(student);
 
         transaction.commit();
+        session.close();
+        sessionFactory.close();
     }
 }
